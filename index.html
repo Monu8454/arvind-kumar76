@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Calculator</title>
+<link src="styles.css" href="styles.css">
+<style>
+  body{display:flex;align-items:center;justify-content:center;height:100vh;font-family:system-ui;background:#f3f4f6}
+  .calc{background:#fff;padding:18px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,.08);width:320px}
+  .display{height:56px;background:#111;color:#fff;font-size:24px;padding:8px 12px;border-radius:8px;text-align:right;overflow:hidden}
+  .keys{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+  button{padding:14px;border-radius:8px;border:0;font-size:18px;cursor:pointer}
+  button.op{background:#f59e0b;color:#fff}
+  button.eq{grid-column:span(2;background:#10b981;color:#fff}
+  button.num{background:#e5e7eb}
+</style>
+
+</head>
+<body>
+<center><img src="C:\Users\shreejee\Desktop\monu kumar temple.jpg"  width="100" height="200" /></center>
+  <div class="calc" role="application">
+    <div id="display" class="display">0</div>
+    <div class="keys">
+      <button class="num" data-val="7">7</button>
+      <button class="num" data-val="8">8</button>
+      <button class="num" data-val="9">9</button>
+      <button class="op" data-op="/">÷</button>
+
+      <button class="num" data-val="4">4</button>
+      <button class="num" data-val="5">5</button>
+      <button class="num" data-val="6">6</button>
+      <button class="op" data-op="*">×</button>
+
+      <button class="num" data-val="1">1</button>
+      <button class="num" data-val="2">2</button>
+      <button class="num" data-val="3">3</button>
+      <button class="op" data-op="-">−</button>
+
+      <button class="num" data-val="0">0</button>
+      <button class="num" data-val=".">.</button>
+      <button class="eq" id="equals">=</button>
+      <button class="op" data-op="+">+</button>
+
+      <button style="grid-column:span(2;background:#ef4444;color:#fff" id="clear">C</button>
+      <button id="back" style="grid-column:span(2)">⌫</button>
+    </div>
+  </div>
+
+<script>
+const display = document.getElementById('display');
+let expr = '';
+
+function update(){
+  display.textContent = expr || '0';
+}
+
+document.querySelectorAll('button.num').forEach(b=>{
+  b.addEventListener('click', ()=>{ expr += b.dataset.val; update(); });
+});
+document.querySelectorAll('button.op').forEach(b=>{
+  b.addEventListener('click', ()=>{ if(!expr) return; expr += b.dataset.op; update(); });
+});
+document.getElementById('equals').addEventListener('click', ()=>{
+  try{
+    // safe-ish eval: allow only digits, operators, dot
+    if(/^[0-9+\-*/.()% ]+$/.test(expr)){
+      expr = String(eval(expr));
+    } else {
+      expr = 'Error';
+    }
+  }catch(e){ expr = 'Error'; }
+  update();
+});
+document.getElementById('clear').addEventListener('click', ()=>{ expr=''; update(); });
+document.getElementById('back').addEventListener('click', ()=>{ expr = expr.slice(0,-1); update(); });
+update();
+</script>
+</body>
+</html>
